@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AltertifyService } from '../_services/altertify.service';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -10,29 +11,30 @@ export class NavbarComponent implements OnInit {
 
   model: any = {};
 
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService,
+              private altertify: AltertifyService) { }
 
   ngOnInit() {
   }
 
   login(){
     this.authService.login(this.model).subscribe(next => {
-      console.log('Logged in successfully');
+      this.altertify.success('Logged in successfully');
     }, error => {
-      console.log(error);
+      this.altertify.error(error);
     });
 
 
   }
 
   loggedIn(){
-    const token = localStorage.getItem('token');
-    return !!token; // double explanation mark shows true or false
+    return this.authService.loggedIn();
+
   }
 
   logout(){
     localStorage.removeItem('token');
-    console.log('logout successfully!');
+    this.altertify.message('logout successfully!');
   }
 
 }
