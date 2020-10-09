@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AltertifyService } from '../_services/altertify.service';
 import { AuthService } from '../_services/auth.service';
 
@@ -12,7 +13,8 @@ export class NavbarComponent implements OnInit {
   model: any = {};
 
   constructor(public authService: AuthService,
-              private altertify: AltertifyService) { }
+              private altertify: AltertifyService,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -22,6 +24,8 @@ export class NavbarComponent implements OnInit {
       this.altertify.success('Logged in successfully');
     }, error => {
       this.altertify.error(error);
+    }, () => {
+        this.router.navigate(['/members']);
     });
 
 
@@ -35,6 +39,7 @@ export class NavbarComponent implements OnInit {
   logout(){
     localStorage.removeItem('token');
     this.altertify.message('logout successfully!');
+    this.router.navigate(['/home']);
   }
 
 }
